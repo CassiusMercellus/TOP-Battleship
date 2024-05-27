@@ -1,0 +1,14 @@
+ToDo
+- Turns need to be added
+    - State of the 2 boards will need to be saved and changed each time the turn has been passed.
+    - Switch instructions header to display which turn it is for which player.
+- Scoring needs to be added
+- Start game button needs to be configured
+- Change reset game function to simply change the orientation of the peices.
+    - Make it only available the first 2 turns 1 for each player 
+    - Once start button is clicked the first time switch to p2 perspective of the board and save the state of player 1.
+    - Once start button is clicked the second time switch to p1 perspective of the board and save p2.
+    - Remove the start game button and randomize ships button and start keeping score.
+
+- Once all ships have been hit from one of the players end the game and claim one of the players as the victor
+- Add a secondary mode in which you play against a computer which randomly takes shots at the board

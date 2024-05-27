@@ -1,11 +1,24 @@
-.gameboard {
+header {
+    display: flex;
+    justify-content: space-evenly;
+}
+.gameboards {
+    display: flex;
+    justify-content: space-evenly;
+}
+.battleship {
+    height: 600px;
+}
+
+.gameboard, .hitboard {
     width: 500px;
     height: 500px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    gap: 5px;
+    border: none;
 }
+
 .grid-item {
     width: 50px;
     height: 50px;
@@ -15,6 +28,36 @@
     align-items: center;
     border: 1px solid #ccc;
 }
+.hit-item {
+    width: 50px;
+    height: 50px;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+}
+
+.r-0, .c-0 {
+    background-color: white;
+}
+
+.grid-item:hover {
+    background-color: blue;
+}
+.hit-item:hover {
+    background-color: red;
+}
+
+.r-0:hover, .c-0:hover {
+    background-color: white;
+}
+
+.ship {
+    border: 1px solid cyan;
+    background-color: cyan;
+}
+
 .scores {
     display: flex;
 }
