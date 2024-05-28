@@ -8,14 +8,14 @@ let computerHits = 0;
 let playerMisses = 0;
 let computerMisses = 0;
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     createGrid();
     scoreGrid();
     createShips();
     createScore();
 
     const startButton = document.getElementById("start");
-    startButton.addEventListener("click", function() {
+    startButton.addEventListener("click", function () {
         if (areAllShipsPlaced()) {
             startGame();
         } else {
@@ -24,14 +24,85 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     const resetButton = document.getElementById("reset");
-    resetButton.addEventListener("click", function() {
-        clearGrid();
-        clearScoreGrid();
-        createShips();
-        document.getElementById("hitboard").classList.add("hidden");
-        document.getElementById("ship-holding-area").style.display = "flex";
+    resetButton.addEventListener("click", function () {
+        reset();
+    });
+    
+
+    const hitboardCells = document.querySelectorAll('.hit-item');
+    hitboardCells.forEach(cell => {
+        cell.addEventListener('click', function () {
+            if (!cell.classList.contains('hit')) {
+                cell.classList.add('hit');
+                if (cell.dataset.ship) {
+                    cell.style.backgroundColor = 'red'; // Hit
+                    playerHits++;
+                    updateScores();
+                    checkPlayerWin()
+                } else {
+                    cell.style.backgroundColor = 'blue'; // Miss
+                    playerMisses++;
+                    updateScores();
+                    checkComputerWin();
+                }
+                // Check if all player ships are hit
+                checkPlayerWin();
+                
+                // Let computer play
+                computerPlay();
+
+            }
+        });
     });
 });
+
+function reset() {
+    console.log("reset");
+    clearGrid();
+    clearScoreGrid();
+    createShips();
+    document.getElementById("hitboard").style.display = "none";
+    document.getElementById("ship-holding-area").style.display = "flex";
+    playerHits = 0;
+    computerHits = 0;
+    playerMisses = 0;
+    computerMisses = 0;
+    updateScores();
+};
+
+function computerPlay() {
+    // Randomly select a square on the player's gameboard
+    const gameboardCells = document.querySelectorAll('.grid-item');
+    let availableCells = Array.from(gameboardCells).filter(cell => !cell.classList.contains('hit'));
+    const randomIndex = Math.floor(Math.random() * availableCells.length);
+    const selectedCell = availableCells[randomIndex];
+    selectedCell.classList.add('hit');
+    if (selectedCell.classList.contains('ship')) {
+        selectedCell.style.backgroundColor = 'red'; // Hit
+        computerHits++;
+        updateScores();
+    } else {
+        selectedCell.style.backgroundColor = 'blue'; // Miss
+        computerMisses++;
+        updateScores();
+    }
+    // Check if all computer ships are hit
+    checkComputerWin();
+}
+
+function checkPlayerWin() {
+    if (playerHits === 17) { // Total number of hits to sink all player ships
+        alert("Player has won!");
+        reset();
+    }
+}
+
+function checkComputerWin() {
+    if (computerHits === 17) { // Total number of hits to sink all player ships
+        alert("Computer has won!");
+        reset();
+    }
+}
 
 function createGrid() {
     const container = document.getElementById('gameboard');
@@ -100,7 +171,7 @@ function scoreGrid() {
                         delete remainingShips[gridItem.dataset.ship];
                         totalShips--;
                         if (totalShips === 0) {
-                            playerWins();
+                            checkPlayerWin();
                         }
                     }
                 } else {
@@ -113,17 +184,15 @@ function scoreGrid() {
     }
 }
 
-function playerWins() {
-    alert("Player has won!");
-    resetButton
-}
 
 
 function clearGrid() {
     const gridItems = document.querySelectorAll('.grid-item');
     gridItems.forEach(item => {
-        item.classList.remove('ship', 'Carrier', 'Battleship', 'Cruiser', 'Submarine', 'Destroyer');
+        item.classList.remove('ship', 'Carrier', 'Battleship', 'Cruiser', 'Submarine', 'Destroyer', 'hit', 'ship-1', 'ship-2', 'ship-3', 'ship-4');
+        item.style.backgroundColor = '';
     });
+    
 }
 
 function clearScoreGrid() {
@@ -354,26 +423,40 @@ function createScore() {
 
     const playerH = document.createElement("div")
     playerH.classList.add('score');
-    playerH.id = `scores`;
+    playerH.id = `player-hits`;
     playerH.textContent = `Player Hits: ${playerHits}`;
     scoreContainer.appendChild(playerH);
 
     const playerM = document.createElement("div")
     playerM.classList.add('score');
-    playerM.id = `scores`;
+    playerM.id = `player-misses`;
     playerM.textContent = `Player Misses: ${playerMisses}`;
     scoreContainer.appendChild(playerM);
 
     const computerH = document.createElement("div")
     computerH.classList.add('score');
-    computerH.id = `scores`;
+    computerH.id = `computer-hits`;
     computerH.textContent = `computer Hits: ${computerHits}`;
     scoreContainer.appendChild(computerH);
 
     const computerM = document.createElement("div")
     computerM.classList.add('score');
-    computerM.id = `scores`;
+    computerM.id = `computer-misses`;
     computerM.textContent = `computer Misses: ${computerMisses}`;
     scoreContainer.appendChild(computerM);
     
+}
+
+function updateScores() {
+    const playerHitsElem = document.getElementById("player-hits");
+    const playerMissesElem = document.getElementById("player-misses");
+
+    playerHitsElem.textContent = `Player Hits: ${playerHits}`;
+    playerMissesElem.textContent = `Player Misses: ${playerMisses}`;
+
+    const computerHitsElem = document.getElementById("computer-hits");
+    const computerMissesElem = document.getElementById("computer-misses");
+
+    computerHitsElem.textContent = `computer Hits: ${computerHits}`;
+    computerMissesElem.textContent = `computer Misses: ${computerMisses}`;
 }
