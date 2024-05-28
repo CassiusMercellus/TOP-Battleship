@@ -1,10 +1,16 @@
 header {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+}
+footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
 }
 .gameboards {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    margin: 50px;
 }
 .battleship {
     height: 600px;
@@ -14,6 +20,15 @@ header {
     width: 500px;
     height: 500px;
     display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    border: none;
+}
+
+.hitboard {
+    width: 500px;
+    height: 500px;
+    display: none;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     border: none;
@@ -38,19 +53,12 @@ header {
     border: 1px solid #ccc;
 }
 
-.r-0, .c-0 {
-    background-color: white;
-}
 
 .grid-item:hover {
     background-color: blue;
 }
 .hit-item:hover {
     background-color: red;
-}
-
-.r-0:hover, .c-0:hover {
-    background-color: white;
 }
 
 .ship {
@@ -64,4 +72,25 @@ header {
 
 .score {
     margin: 25px;
+}
+
+.ship {
+    background-color: gray;
+}
+#ship-holding-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    height: 33px;
+}
+.ship {
+    display: flex;
+    flex-direction: row;
+    cursor: grab;
+}
+.ship .segment {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: gray;
 }
